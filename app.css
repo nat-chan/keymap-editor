@@ -11,6 +11,7 @@
   --theme-light-dialog-bg-rgb: 245,245,245;
   --theme-light-key-bg-rgb: 233,233,237;
   --theme-light-key-bg-base: rgb(var(--theme-light-key-bg-rgb));
+  --theme-light-key-none-bg-base: rgba(var(--theme-light-key-bg-rgb), 0.35);
   --theme-light-key-color-rgb: 50,50,50;
   --theme-light-key-color-base: rgb(var(--theme-light-key-color-rgb));
   --theme-light-key-color-extreme: #313131;
@@ -25,6 +26,7 @@
   --theme-dark-dialog-bg-rgb: 28, 31, 34;
   --theme-dark-key-bg-base: hsl(208.2, 23%, 18%);
   --theme-dark-key-bg-rgb: 49, 65, 78;
+  --theme-dark-key-none-bg-base: hsl(208.2, 23%, 18%, 0.35);
   --theme-dark-key-color-base: hsl(0, 0%, 75%);
   --theme-dark-key-color-rgb: 230,230,230;
   --theme-dark-key-color-extreme: #e7e7e7;
@@ -49,6 +51,7 @@
   --dialog-bg-rgb: var(--theme-light-dialog-bg-rgb);
   --key-bg-rgb: var(--theme-light-key-bg-rgb);
   --key-bg-base: var(--theme-light-key-bg-base);
+  --key-none-bg-base: var(--theme-light-key-none-bg-base);
   --key-color-rgb: var(--theme-light-key-color-rgb);
   --key-color-base: var(--theme-light-key-color-base);
   --key-color-extreme: var(--theme-light-key-color-extreme);
@@ -82,6 +85,7 @@ h1, h2, h3, h4, h5, h6 {
   --dialog-bg-rgb: var(--theme-dark-dialog-bg-rgb);
   --key-bg-base: var(--theme-dark-key-bg-base);
   --key-bg-rgb: var(--theme-dark-key-bg-rgb);
+  --key-none-bg-base: var(--theme-dark-key-none-bg-base);
   --key-color-base: var(--theme-dark-key-color-base);
   --key-color-rgb: var(--theme-dark-key-color-rgb);
   --key-color-extreme: var(--theme-dark-key-color-extreme);
@@ -97,6 +101,7 @@ h1, h2, h3, h4, h5, h6 {
     --dialog-bg: var(--theme-dark-dialog-bg);
     --key-bg-base: var(--theme-dark-key-bg-base);
     --key-bg-rgb: var(--theme-dark-key-bg-rgb);
+    --key-none-bg-base: var(--theme-dark-key-none-bg-base);
     --key-color-base: var(--theme-dark-key-color-base);
     --key-color-rgb: var(--theme-dark-key-color-rgb);
     --key-color-extreme: var(--theme-dark-key-color-extreme);

@@ -3,7 +3,7 @@ const fs = require('fs')
 const path = require('path')
 const { parseKeymap } = require('./keymap')
 
-const ZMK_PATH = path.join(__dirname, '..', '..', '..', 'zmk-config')
+const ZMK_PATH = process.env.ZMK_CONFIG_PATH || path.join(__dirname, '..', '..', '..', 'zmk-config')
 const KEYBOARD = 'dactyl'
 
 const EMPTY_KEYMAP = {
@@ -36,6 +36,18 @@ function loadKeymap () {
   return parseKeymap(keymapContent)
 }
 
+// Optional per-repo template. The default template regenerates the keymap
+// file from scratch, dropping anything that isn't the keymap node itself
+// (combos, listener overrides, custom includes). A repo can provide
+// config/keymap.template containing that extra content plus the
+// {{behaviour_includes}} and {{rendered_layers}} placeholders to keep it.
+function loadTemplate () {
+  const templatePath = path.join(ZMK_PATH, 'config', 'keymap.template')
+  return fs.existsSync(templatePath)
+    ? fs.readFileSync(templatePath, 'utf8')
+    : undefined
+}
+
 function findKeymapFile () {
   const files = fs.readdirSync(path.join(ZMK_PATH, 'config'))
   return files.find(file => file.endsWith('.keymap'))
@@ -62,5 +74,6 @@ module.exports = {
   loadKeycodes,
   loadLayout,
   loadKeymap,
+  loadTemplate,
   exportKeymap
 }

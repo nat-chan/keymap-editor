@@ -15,6 +15,17 @@ JIS配列ユーザー向けの表示改造版です。
 - **キーコード定義のバンドル**: APIサーバなしでもUIが起動します
   (キーマップの読み書きには従来どおりローカルAPIが必要)。
 - **GitHub Pages自動デプロイ**: `.github/workflows/pages.yml`。
+- **`&mkp` / `&msc` / `&mmv`** (マウスキー) ビヘイビアを定義データに追加。
+- **`ZMK_CONFIG_PATH` 環境変数**: zmk-configリポジトリの場所をsymlinkなしで
+  指定可能に。
+- **`config/keymap.template` サポート**: ローカル保存時のkeymap再生成で
+  combosやカスタムincludeが消えないよう、zmk-configリポジトリ側に
+  `{{behaviour_includes}}` / `{{rendered_layers}}` プレースホルダ入りの
+  テンプレートを置けます。
+- ローカルモードは `config/keymap.json` (エディタのJSON形式) を読みます。
+  既存の `.keymap` しかない場合は初回のみ変換が必要です (layersを
+  バインディング文字列のフラット配列にしたJSON)。保存時に `.keymap` と
+  `keymap.json` の両方が更新されます。
 
 ## 使い方 (ローカル)
 

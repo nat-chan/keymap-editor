@@ -5,17 +5,29 @@ import { useMemo, useState } from 'react'
 import * as config from './config'
 import './App.css';
 import { DefinitionsContext } from './providers'
-import { loadKeycodes } from './keycodes'
+import { loadKeycodes, normalizeZmkKeycodes } from './keycodes'
 import { loadBehaviours } from './api'
 import KeyboardPicker from './Pickers/KeyboardPicker';
+import Selector from './Common/Selector'
 import Spinner from './Common/Spinner';
 import Keyboard from './Keyboard/Keyboard'
 import GitHubLink from './GitHubLink'
 import Loader from './Common/Loader'
 import github from './Pickers/Github/api'
 
+const legendChoices = [
+  { id: 'us', name: 'US' },
+  { id: 'jis', name: 'JIS' }
+]
+
+const storedLegend = localStorage.getItem('legendLocale')
+const defaultLegend = legendChoices.find(choice => choice.id === storedLegend)
+  ? storedLegend
+  : 'us'
+
 function App() {
-  const [definitions, setDefinitions] = useState(null)
+  const [rawDefinitions, setRawDefinitions] = useState(null)
+  const [legend, setLegend] = useState(defaultLegend)
   const [source, setSource] = useState(null)
   const [sourceOther, setSourceOther] = useState(null)
   const [layout, setLayout] = useState(null)
@@ -76,12 +88,23 @@ function App() {
         loadBehaviours()
       ])
 
-      keycodes.indexed = keyBy(keycodes, 'code')
-      behaviours.indexed = keyBy(behaviours, 'code')
-
-      setDefinitions({ keycodes, behaviours })
+      setRawDefinitions({ keycodes, behaviours })
     }
-  }, [setDefinitions])
+  }, [setRawDefinitions])
+
+  const definitions = useMemo(() => {
+    if (!rawDefinitions) {
+      return null
+    }
+
+    const keycodes = normalizeZmkKeycodes(rawDefinitions.keycodes, legend)
+    const behaviours = [...rawDefinitions.behaviours]
+
+    keycodes.indexed = keyBy(keycodes, 'code')
+    behaviours.indexed = keyBy(behaviours, 'code')
+
+    return { keycodes, behaviours }
+  }, [rawDefinitions, legend])
 
   const handleUpdateKeymap = useMemo(() => function(keymap) {
     setEditingKeymap(keymap)
@@ -90,7 +113,18 @@ function App() {
   return (
     <>
       <Loader load={initialize}>
-        <KeyboardPicker onSelect={handleKeyboardSelected} />
+        <KeyboardPicker onSelect={handleKeyboardSelected}>
+          <Selector
+            id="legend"
+            label="Legend"
+            value={legend}
+            choices={legendChoices}
+            onUpdate={value => {
+              localStorage.setItem('legendLocale', value)
+              setLegend(value)
+            }}
+          />
+        </KeyboardPicker>
         <div id="actions">
           {source === 'local' && (
             <button disabled={!editingKeymap} onClick={handleCompile}>

@@ -40,10 +40,18 @@ function ValuePicker (props) {
       return choices.slice(0, searchThreshold)
     }
 
-    return filtered.map(result => ({
-      ...result.obj,
-      search: result
-    }))
+    // Also match on the displayed legend so that e.g. "@" or "ろ" finds the
+    // keycode producing that character under the active (US/JIS) legend.
+    const lowerQuery = query.toLowerCase()
+    const symbolMatches = choices.filter(choice => (
+      choice.symbol && choice.symbol.toLowerCase().includes(lowerQuery)
+    ))
+    const matchedKeys = new Set(symbolMatches.map(choice => choice[searchKey]))
+    const fuzzyMatches = filtered
+      .map(result => ({ ...result.obj, search: result }))
+      .filter(result => !matchedKeys.has(result[searchKey]))
+
+    return [...symbolMatches, ...fuzzyMatches].slice(0, 30)
   }, [query, choices, searchKey, showAll, searchThreshold])
 
   const enableShowAllButton = useMemo(() => {
@@ -166,6 +174,9 @@ function ValuePicker (props) {
             ) : (
               <span>
                 {result[searchKey]}
+                {result.symbol && result.symbol !== result[searchKey] && (
+                  <span style={{ opacity: 0.6 }}> {result.symbol}</span>
+                )}
               </span>
             )}
           </li>

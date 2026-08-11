@@ -1,4 +1,40 @@
-# <img alt="Keymap Editor Icon" height="24px" src="https://github.com/nickcoutsos/keymap-editor/assets/1165066/6675cc0d-d6cd-40a6-9d2a-fa4a86749a6e" /> Keymap Editor
+# <img alt="Keymap Editor Icon" height="24px" src="https://github.com/nickcoutsos/keymap-editor/assets/1165066/6675cc0d-d6cd-40a6-9d2a-fa4a86749a6e" /> Keymap Editor (JIS対応フォーク)
+
+このフォーク ([nat-chan/keymap-editor](https://github.com/nat-chan/keymap-editor)) は
+JIS配列ユーザー向けの表示改造版です。
+
+## このフォークの変更点
+
+- **Legendセレクタ (US/JIS)**: 画面上部のセレクタで表示を切り替え。JISを選ぶと
+  各キーコードが「JIS配列のOSで実際に出る文字」で表示されます
+  (例: `LBKT`→`@`, `SQT`→`:`, `NUHS`→`]`, `INT3`→`¥`, `INT1`→`ろ`,
+  `GRAVE`→`半/全`, shift付きの `AT`→`"`, `COLON`→`+` なども対応)。
+  選択は localStorage に保存されます。
+- **レジェンド検索**: キーコード検索で `@` や `ろ` のように「出したい文字」から
+  検索できます。
+- **キーコード定義のバンドル**: APIサーバなしでもUIが起動します
+  (キーマップの読み書きには従来どおりローカルAPIが必要)。
+- **GitHub Pages自動デプロイ**: `.github/workflows/pages.yml`。
+
+## 使い方 (ローカル)
+
+上流の [running-locally.md](./running-locally.md) と同じです:
+リポジトリ直下に自分のzmk-configリポジトリをclone(またはsymlink)して
+`npm install && npm run dev`、ブラウザで `http://localhost:8080` を開きます。
+Save Localで保存し、gitでcommit/pushするとGitHub Actionsがファームウェアを
+ビルドします。
+
+> **注意**: 本家 https://nickcoutsos.github.io/keymap-editor/ のGitHub連携
+> (リポジトリへの直接コミット) は本家のAPIサーバ+GitHub Appに依存しており、
+> CORSが本家ドメインに固定されているためこのフォークからは利用できません。
+> GitHub連携が必要な場合は自前でAPIをホストし、GitHub Appを登録する必要が
+> あります (下記 app/README.md 参照)。また、このリポジトリは本家の公開
+> スナップショット(2023年時点)がベースのため、本家ホスト版にある
+> コンボ・マクロ編集などの新機能は含まれません。
+
+---
+
+以下、上流のREADME:
 
 A browser app to edit ZMK keymaps. Although one of the goals for this project is
 to simplify the manual effort of keymap editing for the end user, is isn't a

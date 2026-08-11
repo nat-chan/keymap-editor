@@ -22,7 +22,7 @@ const defaultSource = onlySource || (
 )
 
 function KeyboardPicker(props) {
-  const { onSelect } = props
+  const { onSelect, children } = props
   const [source, setSource] = useState(defaultSource)
 
   const handleKeyboardSelected = useMemo(() => function (event) {
@@ -64,6 +64,8 @@ function KeyboardPicker(props) {
           onSelect(value)
         }}
       />
+
+      {children}
 
       {source === 'github' && (
         <GithubPicker onSelect={handleKeyboardSelected} />
